@@ -22,14 +22,16 @@ import {
   userResetForgottenPasswordValidator,
 } from "../validators/auth.validators.js";
 import { validate } from "../validators/validate.js";
-import { verifyJWT, verifyPermission } from "../middleware/auth.middleware.js";
-import { UserRolesEnum } from "../utils/Constants.js";
-import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators.js";
-//import passport config
-import "../passport/index.js";
-import { createApiKey, getApiKeys } from "../controllers/apikey.controllers.js";
-const router = Router();
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
+//import passport config
+// import "../passport/index.js";
+
+
+import { createApiKey, getApiKeys } from "../controllers/apikey.controllers.js";
+
+const router = Router();
+console.log(process.env.GOOGLE_CLIENT_ID,"after import")
 //basic features of auth
 router.route("/register").post(userRegisterValidator(), validate, signup);
 router.route("/login").post(userLoginValidator(), validate, login);

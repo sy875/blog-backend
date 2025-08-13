@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { User } from "../models/user.models";
-import { asyncHandler } from "../utils/async-handler";
-import { ApiError } from "../utils/api-error";
-import ApiResponse from "../utils/api-response";
-import { MyJwtPayload } from "../types/user";
+import { User } from "../models/user.models.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { ApiError } from "../utils/api-error.js";
+import ApiResponse from "../utils/api-response.js";
+import { MyJwtPayload } from "../types/user.js";
 import jwt from "jsonwebtoken";
 import { access } from "fs";
 import { Request, Response } from "express";
@@ -12,7 +12,7 @@ import {
   emailVerificationMailgenContent,
   forgotPasswordMailgenContent,
   sendEmail,
-} from "../utils/mail";
+} from "../utils/mail.js";
 
 const generateAccessAndRefeshTokens = async (
   userId: string | Types.ObjectId

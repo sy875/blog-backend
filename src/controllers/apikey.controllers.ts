@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../utils/async-handler";
-import { ApiKey } from "../models/apikey.models";
-import { ApiError } from "../utils/api-error";
+import { asyncHandler } from "../utils/async-handler.js";
+import { ApiKey } from "../models/apikey.models.js";
+import { ApiError } from "../utils/api-error.js";
 import crypto from "crypto";
-import ApiResponse from "../utils/api-response";
+import ApiResponse from "../utils/api-response.js";
 
 export const createApiKey = asyncHandler(
   async (req: Request, res: Response) => {

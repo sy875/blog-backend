@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import ApiResponse from "../utils/api-response";
-import { asyncHandler } from "../utils/async-handler";
-import { Post } from "../models/post.models";
-import { PostApprovalType, PostStatusType } from "../utils/Constants";
-import { ApiError } from "../utils/api-error";
-import { PostReview } from "../models/postReview.models";
+import ApiResponse from "../utils/api-response.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { Post } from "../models/post.models.js";
+import { PostApprovalType, PostStatusType } from "../utils/Constants.js";
+import { ApiError } from "../utils/api-error.js";
+import { PostReview } from "../models/postReview.models.js";
 
 export const createPost = asyncHandler(async (req: Request, res: Response) => {
   const { title, description, body, status } = req.body;
