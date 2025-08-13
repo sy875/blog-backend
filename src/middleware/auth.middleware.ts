@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { asyncHandler } from "../utils/async-handler.js";
-import { ApiError } from "../utils/api-error.js";
+import { asyncHandler } from "../utils/async-handler";
+import { ApiError } from "../utils/api-error";
 import jwt from "jsonwebtoken";
-import { MyJwtPayload } from "../types/user.js";
-import { User } from "../models/user.models.js";
+import { MyJwtPayload } from "../types/user";
+import { User } from "../models/user.models";
 import { createHash } from "crypto";
 import crypto from "crypto";
-import { ApiKey } from "../models/apikey.models.js";
+import { ApiKey } from "../models/apikey.models";
 /**
  * @description This middleware is responsible for validating access token
  */

@@ -4,7 +4,7 @@ import {
   AvailablePostStatuses,
   PostApprovalType,
   PostStatusType,
-} from "../utils/Constants.js";
+} from "../utils/Constants";
 import slugify from "slugify";
 
 const postSchema = new mongoose.Schema(

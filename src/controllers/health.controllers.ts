@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import ApiResponse from "../utils/api-response.js";
-import { asyncHandler } from "../utils/async-handler.js";
+import ApiResponse from "../utils/api-response";
+import { asyncHandler } from "../utils/async-handler";
 
 export const healthController = asyncHandler(
   async (req: Request, res: Response) => {

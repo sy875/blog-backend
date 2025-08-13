@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../utils/async-handler.js";
-import ApiResponse from "../utils/api-response.js";
-import { Post } from "../models/post.models.js";
-import { ApiError } from "../utils/api-error.js";
-import { Comment } from "../models/comment.models.js";
+import { asyncHandler } from "../utils/async-handler";
+import ApiResponse from "../utils/api-response";
+import { Post } from "../models/post.models";
+import { ApiError } from "../utils/api-error";
+import { Comment } from "../models/comment.models";
 
 export const createComment = asyncHandler(
   async (req: Request, res: Response) => {

@@ -1,5 +1,5 @@
 import mongoose, { mongo } from "mongoose";
-import { AvailablePostApprovalStatuses } from "../utils/Constants.js";
+import { AvailablePostApprovalStatuses } from "../utils/Constants";
 
 const postReviewSchema = new mongoose.Schema(
   {

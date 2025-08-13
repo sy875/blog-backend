@@ -27,8 +27,6 @@ try {
     }
   });
 
-  // console.log(process.env.GOOGLE_CLIENT_ID,process.env)
-  
   passport.use(
     new GoogleStrategy(
       {
@@ -67,7 +65,7 @@ try {
             password: profile._json.sub, // Set user's password as sub (coming from the google)
             username: profile._json.email?.split("@")[0], // as email is unique, this username will be unique
             isEmailVerified: true, // email will be already verified
-            role: UserRolesEnum.USER,
+            role: UserRolesEnum.STUDENT,
             avatar: {
               url: profile._json.picture,
               localPath: "",
@@ -89,9 +87,9 @@ try {
       {
         clientID: process.env.GITHUB_CLIENT_ID!,
         clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-        callbackURL: process.env.GITHUB_CALLBACK_URL!,
+        callbackURL: process.env.GITHUB_CALLBACK_URL!, 
       },
-      async (_: any, __: any, profile: any, next: any) => {
+      async (_:any, __:any, profile:any, next:any) => {
         const user = await User.findOne({ email: profile._json.email });
         if (user) {
           if (user.loginType !== UserLoginType.GITHUB) {
@@ -133,7 +131,7 @@ try {
                   profile._json.email?.split("@")[0]
                 : profile?.username,
               isEmailVerified: true, // email will be already verified
-              role: UserRolesEnum.USER,
+              role: UserRolesEnum.STUDENT,
               avatar: {
                 url: profile._json.avatar_url,
                 localPath: "",

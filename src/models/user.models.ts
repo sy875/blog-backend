@@ -1,14 +1,9 @@
 import { Model, model, Schema } from "mongoose";
-import {
-  AvailableSocialLogins,
-  AvailableUserRoles,
-  UserLoginType,
-  UserRolesEnum,
-} from "../utils/Constants.js";
+import { AvailableSocialLogins, AvailableUserRoles, UserLoginType, UserRolesEnum } from "../utils/Constants";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { IUser, IUserMethods } from "../types/user.js";
+import { IUser, IUserMethods } from "../types/user";
 
 const userSchema = new Schema<
   IUser,
@@ -66,7 +61,7 @@ const userSchema = new Schema<
     role: {
       type: String,
       enum: AvailableUserRoles,
-      default: UserRolesEnum.USER,
+      default: UserRolesEnum.STUDENT,
       required: true,
     },
     loginType: {

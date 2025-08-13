@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { verifyJWT, verifyPermission } from "../middleware/auth.middleware.js";
-import { UserRolesEnum } from "../utils/Constants.js";
+import { verifyJWT, verifyPermission } from "../middleware/auth.middleware";
+import { UserRolesEnum } from "../utils/Constants";
 import {
   createCategory,
   getAllCategory,
-} from "../controllers/category.controllers.js";
+} from "../controllers/category.controllers";
 
 const router = Router();
 
