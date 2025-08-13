@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { User } from "../models/user.models";
-import { asyncHandler } from "../utils/async-handler";
-import { ApiError } from "../utils/api-error";
-import ApiResponse from "../utils/api-response";
-import { MyJwtPayload } from "../types/user";
+import { User } from "../models/user.models.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { ApiError } from "../utils/api-error.js";
+import ApiResponse from "../utils/api-response.js";
+import { MyJwtPayload } from "../types/user.js";
 import jwt from "jsonwebtoken";
 import { access } from "fs";
 import { Request, Response } from "express";
@@ -12,7 +12,7 @@ import {
   emailVerificationMailgenContent,
   forgotPasswordMailgenContent,
   sendEmail,
-} from "../utils/mail";
+} from "../utils/mail.js";
 
 const generateAccessAndRefeshTokens = async (
   userId: string | Types.ObjectId
@@ -78,7 +78,7 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(500, "Something went wrong while registering user");
 
   return res
-    .status(200)
+    .status(201)
     .json(
       new ApiResponse(201, { user: createdUser }, "successfully registerd user")
     );
@@ -174,6 +174,28 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "user logged out"));
+});
+
+export const assignRole = asyncHandler(async (req: Request, res: Response) => {
+  const { role } = req.body;
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        role,
+      },
+    },
+    { new: true }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Role upodated successfully"));
 });
 
 export const refreshAccessToken = asyncHandler(
@@ -315,7 +337,6 @@ export const changeCurrentPassword = asyncHandler(
       .json(new ApiResponse(200, {}, "successfully changed password"));
   }
 );
-
 
 export const getCurrentUser = asyncHandler(
   async (req: Request, res: Response) => {

@@ -1,14 +1,21 @@
 import { Request, Response } from "express";
-import ApiResponse from "../utils/api-response";
-import { asyncHandler } from "../utils/async-handler";
-import { Post } from "../models/post.models";
-import { PostApprovalType, PostStatusType } from "../utils/Constants";
-import { ApiError } from "../utils/api-error";
-import { PostReview } from "../models/postReview.models";
+import ApiResponse from "../utils/api-response.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { Post } from "../models/post.models.js";
+import { PostApprovalType, PostStatusType } from "../utils/Constants.js";
+import { ApiError } from "../utils/api-error.js";
+import { PostReview } from "../models/postReview.models.js";
 
 export const createPost = asyncHandler(async (req: Request, res: Response) => {
-  const { title, description, body, status } = req.body;
-  const post = await Post.create({ title, description, body, status });
+  const { title, slug, description, body, status } = req.body;
+  const post = await Post.create({
+    title,
+    slug,
+    description,
+    body,
+    status,
+    author: req.user._id,
+  });
   return res
     .status(201)
     .json(new ApiResponse(201, post, "Post created successfully"));
@@ -25,9 +32,9 @@ export const getPost = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getPostById = asyncHandler(async (req: Request, res: Response) => {
-  const { postId } = req.params;
+  const { id } = req.params;
   const post = await Post.findOne({
-    _id: postId,
+    _id: id,
     approvalStatus: PostApprovalType.APPROVED,
   });
   if (!post) {
@@ -41,17 +48,23 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 export const updatePost = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description, body, status } = req.body;
+
+  console.log("id is", id, "user is ", req.user._id);
+
   const post = await Post.findOneAndUpdate(
     {
       _id: id,
       approvalStatus: { $ne: PostApprovalType.APPROVED },
-      author: req.user._id,
+      // author: req.user._id,
     },
     {
       $set: { title, description, body, status },
     },
     { new: true }
   );
+
+  // console.log(post,id,req.user._id);
+
   if (!post) {
     throw new ApiError(404, "Post does not exist");
   }
@@ -65,7 +78,7 @@ export const updatePost = asyncHandler(async (req: Request, res: Response) => {
 
 export const deletePost = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, description, body, status } = req.body;
+
   const post = await Post.findOneAndDelete({
     _id: id,
     approvalStatus: { $ne: PostApprovalType.APPROVED },
@@ -106,12 +119,12 @@ export const getAllPendingPost = asyncHandler(
 export const updatePostApproval = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { status, approvalComment } = req.body;
+    const { status, comment } = req.body;
 
     const post = await Post.findByIdAndUpdate(
       id,
       {
-        $set: { approvalStatus: status, approvalComment },
+        $set: { approvalStatus: status, approvalComment: comment },
       },
       { new: true }
     );
@@ -120,7 +133,7 @@ export const updatePostApproval = asyncHandler(
       post: post?._id,
       admin: req.user._id,
       action: status,
-      comment: approvalComment || "",
+      approvalComment: comment || "",
     });
 
     if (!post) {

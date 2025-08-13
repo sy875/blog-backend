@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../utils/async-handler";
-import ApiResponse from "../utils/api-response";
-import { Post } from "../models/post.models";
-import { ApiError } from "../utils/api-error";
-import { Comment } from "../models/comment.models";
+import { asyncHandler } from "../utils/async-handler.js";
+import ApiResponse from "../utils/api-response.js";
+import { Post } from "../models/post.models.js";
+import { ApiError } from "../utils/api-error.js";
+import { Comment } from "../models/comment.models.js";
 
 export const createComment = asyncHandler(
   async (req: Request, res: Response) => {
@@ -16,7 +16,7 @@ export const createComment = asyncHandler(
       throw new ApiError(404, "Post does not exist");
     }
 
-    const commentExist = await Comment.find({
+    const commentExist = await Comment.findOne({
       post: postId,
       user: req.user._id,
     });
@@ -31,10 +31,10 @@ export const createComment = asyncHandler(
     });
 
     return res
-      .status(200)
+      .status(201)
       .json(
         new ApiResponse(
-          200,
+          201,
           { comment: newComment },
           "Comment created successfully"
         )
@@ -46,11 +46,17 @@ export const getAllComment = asyncHandler(
   async (req: Request, res: Response) => {
     const { postId } = req.params;
 
-    const allComment = await Comment.find({ post: postId });
+    const allComments = await Comment.find({ post: postId });
 
     return res
       .status(200)
-      .json(new ApiResponse(200, allComment, "Comments fetched successfully"));
+      .json(
+        new ApiResponse(
+          200,
+          { allComments: allComments },
+          "Comments fetched successfully"
+        )
+      );
   }
 );
 
@@ -97,7 +103,7 @@ export const deleteComment = asyncHandler(
     return res
       .status(200)
       .json(
-        new ApiResponse(200, deletedComment, "Comment updated successfully")
+        new ApiResponse(200, deletedComment, "Comment deleted successfully")
       );
   }
 );

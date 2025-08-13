@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { verifyJWT, verifyPermission } from "../middleware/auth.middleware";
-import { PostApprovalType, UserRolesEnum } from "../utils/Constants";
+import { verifyJWT, verifyPermission } from "../middleware/auth.middleware.js";
+import { PostApprovalType, UserRolesEnum } from "../utils/Constants.js";
 import {
   getAllPendingPost,
   updatePostApproval,
-} from "../controllers/post.controllers";
+} from "../controllers/post.controllers.js";
 
 const router = Router();
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import {
+  assignRole,
   changeCurrentPassword,
   forgetPasswordRequest,
   getCurrentUser,
@@ -42,6 +43,7 @@ router.route("/me").get(verifyJWT, getCurrentUser);
 //Extra fetures
 
 router.route("/logout").get(verifyJWT, logout);
+router.route("/assign-role").post(verifyJWT, assignRole);
 router.route("/refresh-access-token").get(refreshAccessToken);
 
 router

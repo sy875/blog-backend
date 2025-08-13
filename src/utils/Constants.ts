@@ -30,3 +30,11 @@ export const PostApprovalType = {
 };
 
 export const AvailablePostApprovalStatuses = Object.values(PostApprovalType);
+
+export const authRoute = "/api/v1/auth";
+export const categoryRoute = "/api/v1/categories";
+export const postRoute = "/api/v1/posts";
+export const reviewRoute = "/api/v1/review";
+export const commentRoute = "/api/v1/comment";
+export const adminRoute = "/api/v1/admin";
+

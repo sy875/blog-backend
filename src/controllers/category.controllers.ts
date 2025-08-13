@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
-import { asyncHandler } from "../utils/async-handler";
-import ApiResponse from "../utils/api-response";
-import { Category } from "../models/categories.models";
-import { ApiError } from "../utils/api-error";
+import { asyncHandler } from "../utils/async-handler.js";
+import ApiResponse from "../utils/api-response.js";
+import { Category } from "../models/categories.models.js";
+import { ApiError } from "../utils/api-error.js";
 
 export const createCategory = asyncHandler(
   async (req: Request, res: Response) => {
     const { name } = req.body;
     const duplicateName = name.trim().toLowerCase();
-    const categoryExist = await Category.find({ name: duplicateName });
+    const categoryExist = await Category.findOne({ name: duplicateName });
+    console.log(categoryExist)
     if (categoryExist) {
       throw new ApiError(409, "Category exist");
     }

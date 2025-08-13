@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { verifyJWT } from "../middleware/auth.middleware";
-import { getPostReviews } from "../controllers/postReview.controller";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import { getPostReviews } from "../controllers/postReview.controller.js";
 
 const router = Router();
 

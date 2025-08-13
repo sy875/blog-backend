@@ -4,13 +4,13 @@ import {
   deleteComment,
   getAllComment,
   updateComment,
-} from "../controllers/comment.controller";
-import { verifyJWT } from "../middleware/auth.middleware";
-import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators";
+} from "../controllers/comment.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators.js";
 
 const router = Router();
 
-router.route("/").get(getAllComment).post(verifyJWT, createComment);
+router.route("/:postId").get(getAllComment).post(verifyJWT, createComment);
 
 router
   .route("/:commentId")

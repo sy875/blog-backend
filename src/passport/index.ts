@@ -65,7 +65,7 @@ try {
             password: profile._json.sub, // Set user's password as sub (coming from the google)
             username: profile._json.email?.split("@")[0], // as email is unique, this username will be unique
             isEmailVerified: true, // email will be already verified
-            role: UserRolesEnum.STUDENT,
+            role: UserRolesEnum.USER,
             avatar: {
               url: profile._json.picture,
               localPath: "",
@@ -131,7 +131,7 @@ try {
                   profile._json.email?.split("@")[0]
                 : profile?.username,
               isEmailVerified: true, // email will be already verified
-              role: UserRolesEnum.STUDENT,
+              role: UserRolesEnum.USER,
               avatar: {
                 url: profile._json.avatar_url,
                 localPath: "",
