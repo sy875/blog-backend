@@ -90,7 +90,7 @@ export const getPostById = asyncHandler(async (req: Request, res: Response) => {
 export const updatePost = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description, body, status } = req.body;
-
+  
   const post = await Post.findOneAndUpdate(
     {
       _id: id,
@@ -174,7 +174,7 @@ export const updatePostApproval = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { status, comment = "" } = req.body;
-    console.log(status)
+    // console.log(status)
 
     const post = await Post.findByIdAndUpdate(
       id,

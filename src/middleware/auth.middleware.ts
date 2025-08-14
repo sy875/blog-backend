@@ -7,6 +7,7 @@ import { User } from "../models/user.models.js";
 import { createHash } from "crypto";
 import crypto from "crypto";
 import { ApiKey } from "../models/apikey.models.js";
+import { EXCLUDE_API_KEY_VERIFICATION } from "../utils/Constants.js";
 /**
  * @description This middleware is responsible for validating access token
  */
@@ -64,11 +65,28 @@ export const verifyPermission = (roles = ["admin"]) =>
  */
 export const verifyApiKey = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user);
+    if (req.originalUrl.startsWith(EXCLUDE_API_KEY_VERIFICATION)) return next();
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+
+    if (token) {
+      await new Promise<void>((resolve, reject) => {
+        try {
+          verifyJWT(req, res, (err?: any) => {
+            if (err) return reject(err);
+            resolve();
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+
     if (req.user) {
       return next();
     }
-
+    
     const incomingApiKey = req.header("x-api-key") || req.query.apiKey;
 
     if (!incomingApiKey || typeof incomingApiKey != "string") {

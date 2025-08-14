@@ -38,3 +38,6 @@ export const reviewRoute = "/api/v1/review";
 export const commentRoute = "/api/v1/comment";
 export const adminRoute = "/api/v1/admin";
 
+
+
+export const  EXCLUDE_API_KEY_VERIFICATION = "/api/v1/auth";
