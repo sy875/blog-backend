@@ -22,10 +22,45 @@ export const createPost = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getPost = asyncHandler(async (req: Request, res: Response) => {
-  const post = await Post.find({
-    status: PostStatusType.PUBLISHED,
-    approvalStatus: PostApprovalType.APPROVED,
-  });
+  const post = await Post.aggregate([
+    {
+      $match: {
+        status: PostStatusType.PUBLISHED,
+        approvalStatus: PostApprovalType.APPROVED,
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        slug: 1,
+        author: 1,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "author_details",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+              avatar: 1,
+            },
+          },
+        ],
+      },
+    },
+
+    {
+      $addFields: {
+        author_details: { $first: "$author_details" },
+      },
+    },
+  ]);
+
   return res
     .status(200)
     .json(new ApiResponse(200, post, "Post fetched successfully"));
@@ -33,10 +68,17 @@ export const getPost = asyncHandler(async (req: Request, res: Response) => {
 
 export const getPostById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
+
   const post = await Post.findOne({
     _id: id,
     approvalStatus: PostApprovalType.APPROVED,
-  });
+  })
+    .select("-approvalStatus -approvalComment -status")
+    .populate({
+      path: "author",
+      select: "username avatar",
+    });
+
   if (!post) {
     throw new ApiError(404, "Post does not exist");
   }
@@ -49,13 +91,10 @@ export const updatePost = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description, body, status } = req.body;
 
-  console.log("id is", id, "user is ", req.user._id);
-
   const post = await Post.findOneAndUpdate(
     {
       _id: id,
       approvalStatus: { $ne: PostApprovalType.APPROVED },
-      // author: req.user._id,
     },
     {
       $set: { title, description, body, status },
@@ -69,10 +108,21 @@ export const updatePost = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(404, "Post does not exist");
   }
 
+  const updatedPost = await Post.findById(post._id)
+    .select("-approvalStatus -approvalComment -status")
+    .populate({
+      path: "author",
+      select: "username avatar",
+    });
+
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { updatedPost: post }, "Post updated successfully")
+      new ApiResponse(
+        200,
+        { updatedPost: updatedPost },
+        "Post updated successfully"
+      )
     );
 });
 
@@ -91,7 +141,11 @@ export const deletePost = asyncHandler(async (req: Request, res: Response) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { deletedPost: post }, "Post deleted successfully")
+      new ApiResponse(
+        200,
+        { deletedPost: post.slug },
+        "Post deleted successfully"
+      )
     );
 });
 
@@ -119,7 +173,8 @@ export const getAllPendingPost = asyncHandler(
 export const updatePostApproval = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { status, comment } = req.body;
+    const { status, comment = "" } = req.body;
+    console.log(status)
 
     const post = await Post.findByIdAndUpdate(
       id,

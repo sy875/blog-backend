@@ -21,7 +21,7 @@ export const createCategory = asyncHandler(
 );
 export const getAllCategory = asyncHandler(
   async (req: Request, res: Response) => {
-    const allCategory = await Category.find({});
+    const allCategory = await Category.find({}).select("name")
     return res
       .status(200)
       .json(

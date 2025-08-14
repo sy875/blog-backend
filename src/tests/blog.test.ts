@@ -273,14 +273,14 @@ describe("Comment routes", () => {
         approvalComment: "Looks good",
       });
     postId = res.body.data._id;
-    console.log("post is ==>", postId);
+    // console.log("post is ==>", postId);
   });
 
   it("should allow user to create a comment", async () => {
     const res = await userRequest.post(`${commentRoute}/${postId}`).send({
       comment: "This is a test comment",
     });
-    console.log("comment is ==>", res);
+    // console.log("comment is ==>", res);
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty("data");
     expect(res.body.data.comment.comment).toBe("This is a test comment");
@@ -290,7 +290,7 @@ describe("Comment routes", () => {
 
   it("should get all comments for a post", async () => {
     const res = await userRequest.get(`${commentRoute}/${postId}`);
-    console.log(res.body);
+    // console.log(res.body);
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body.data.allComments)).toBe(true);
     expect(
