@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "jest",
+    "pre-commit": "lint-staged",
+    "prepare": "tsc && node dist/prepare.js",
     "dev": "tsc-watch --onSuccess \"nodemon -r dotenv/config --experimental-json-modules dist/index.js\"",
     "build": "npm i && tsc",
     "tsc": "tsc -w"
@@ -33,6 +35,8 @@
     "uninstall": "^0.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
@@ -46,7 +50,10 @@
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/request-ip": "^0.0.41",
     "@types/supertest": "^6.0.3",
+    "husky": "^9.1.7",
     "jest": "^30.0.5",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
