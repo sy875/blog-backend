@@ -32,9 +32,13 @@ You can explore the API endpoints through our [Postman Collection](https://www.p
 
 ## 📦 Installation
 
-1. **Clone the repository**
+ **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/sy875/blog-backend
    cd inkwell-blog-app
    npm install
    npm run dev
+
+## Test application
+```bash
+npm run test
