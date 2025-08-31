@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "./user.models";
+import { User } from "./user.models.js";
 
 const ApiKeysSchema = new mongoose.Schema(
   {

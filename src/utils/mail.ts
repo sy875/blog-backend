@@ -1,6 +1,6 @@
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+import SMTPTransport from "nodemailer/lib/smtp-transport/index.js";
 
 interface SendEmailOptions {
   email: string;
